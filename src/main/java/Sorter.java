@@ -26,7 +26,7 @@ public class Sorter {
             factory.close();
         }
         catch (Exception e){
-            e.printStackTrace();
+            e.getCause();
         }
     }
 }
