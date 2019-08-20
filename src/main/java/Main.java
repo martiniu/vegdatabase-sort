@@ -4,7 +4,8 @@ public class Main {
             Sorter.useAPI();
             //Sorter.printVegobjekter();
             //Sorter.printVegegenskaper();
-            Sorter.skrivVegegenskaper();
+            //Sorter.skrivVegegenskaper();
+            Sorter.finnVeg();
         }
         catch (Exception e){
             e.getCause();

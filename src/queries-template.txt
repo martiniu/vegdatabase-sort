@@ -18,6 +18,6 @@ vegreferanse-532
 egenskap kategori-4566 = E
 egenskap nummer-4568 = 18
 
-532?egenskap="4566"
+532?egenskap="egenskap(4566)=E"
 
 

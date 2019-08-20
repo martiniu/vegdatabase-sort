@@ -7,6 +7,8 @@ import no.vegvesen.nvdbapi.client.model.roadobjects.Attribute;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Sorter {
@@ -53,11 +55,16 @@ public class Sorter {
             e.printStackTrace();
         } catch (IOException e){
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
+    static void finnVeg(){
+        RoadObject roadObject = roadObjectClient.getRoadObject(583, 86512964);
+        System.out.println(roadObject.getId());
+        for (Attribute attribute : roadObject.getAttributes()){
+            System.out.println(attribute.getTypeName() + ": " + attribute.getValue());
+        }
+    }
 }
