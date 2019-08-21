@@ -1,14 +1,13 @@
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         try {
-            Sorter.useAPI();
-            //Sorter.printVegobjekter();
-            //Sorter.printVegegenskaper();
-            //Sorter.skrivVegegenskaper();
-            Sorter.finnVeg();
-        }
-        catch (Exception e){
-            e.getCause();
+            Sorter.startClient();
+            //Sorter.findRoadObject(583, 86512964);
+            Sorter.writeRoadObjectsFull();
+
+            Sorter.stopClient();
+        } catch (Exception e) {
+            e.getStackTrace();
         }
     }
 }

@@ -1,50 +1,59 @@
 import no.vegvesen.nvdbapi.client.clients.ClientFactory;
 import no.vegvesen.nvdbapi.client.clients.RoadObjectClient;
 import no.vegvesen.nvdbapi.client.model.datakatalog.AttributeType;
-import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.FeatureType;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Attribute;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 public class Sorter {
     private static ClientFactory clientFactory;
     private static RoadObjectClient roadObjectClient;
 
-    static void useAPI() throws Exception{
-        clientFactory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v2", "nvdbapi-client", "ACME");
+    static void startClient() throws Exception {
+        clientFactory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v2", "nvdb-api-client", "ACME");
         roadObjectClient = clientFactory.createRoadObjectClient();
+    }
 
+    static void stopClient() throws Exception{
         clientFactory.close();
     }
 
-    static void printVegobjekter(){
-        for (FeatureType featureType : roadObjectClient.getDatakatalog().getFeatureTypes()){
-            System.out.println("[" + featureType.getId() + "]" + featureType.getName() + "\nDesc: " + featureType.getDescription());
-        }
+    String getSearchInfo(){
+        //Bredde av felt under x verdi
+
+        //Hvilket felt man ønsker målt
+
+        //Bredde av dekkbredde
+
+        //
+
+        return "";
     }
 
-    static void printVegegenskaper(){
-        for (FeatureType featureType : roadObjectClient.getDatakatalog().getFeatureTypes()){
-            System.out.println("[" + featureType.getId() + "]" + featureType.getName() + "\n\n");
-            for (AttributeType attributeType : featureType.getAttributeTypes()){
-                System.out.println("[" + attributeType.getId() + "]:" + attributeType.getName() + "\nDescription: " + attributeType.getDescription() + "\n");
-            }
-        }
+
+    static void findRoadObject(int roadTypeId, long attributeTypeId){
+        RoadObject roadObject = roadObjectClient.getRoadObject(roadTypeId, attributeTypeId);
+        System.out.println(roadObject.getId());
     }
 
-    static void skrivVegegenskaper(){
+    /**
+     * This method writes all roadobject types to a file and all their property types.
+     * ===[FeatureTypeID]:FeatureTypeName===
+     * [AttributeTypeID]:AttributeTypeName
+     * Description: ...
+     */
+    static void writeRoadObjectsFull(){
         try {
-            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("egenskaper.txt"), "utf-8"));
+            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("egenskaper2.txt"), "utf-8"));
 
             for (FeatureType featureType : roadObjectClient.getDatakatalog().getFeatureTypes()){
                 writer.write("\n===[" + featureType.getId() + "]:" + featureType.getName() + "===\n");
                 for (AttributeType attributeType : featureType.getAttributeTypes()){
-                    writer.write("[" + attributeType.getId() + "]:" + attributeType.getName() + "\nDescription: " + attributeType.getDescription() + "\n");
+                    writer.write("[" + attributeType.getId() + "]:" + attributeType.getName() + "\nDescription: "
+                            + attributeType.getDescription() + "\nTypeDesc:" + attributeType.getType().getDescription()
+                            + "\n" + attributeType.getType().getName() + "\n" + attributeType.getType().getId() + "\n"
+                            ++"\n");
                 }
             }
             writer.write("END");
@@ -60,11 +69,19 @@ public class Sorter {
         }
     }
 
-    static void finnVeg(){
-        RoadObject roadObject = roadObjectClient.getRoadObject(583, 86512964);
-        System.out.println(roadObject.getId());
-        for (Attribute attribute : roadObject.getAttributes()){
-            System.out.println(attribute.getTypeName() + ": " + attribute.getValue());
-        }
-    }
+//    static void printRoadObjects(){
+//        for (FeatureType featureType : roadObjectClient.getDatakatalog().getFeatureTypes()){
+//            System.out.println("[" + featureType.getId() + "]" + featureType.getName() + "\nDesc: " + featureType.getDescription());
+//        }
+//    }
+//
+//    static void printRoadObjectsFull(){
+//        for (FeatureType featureType : roadObjectClient.getDatakatalog().getFeatureTypes()){
+//            System.out.println("[" + featureType.getId() + "]" + featureType.getName() + "\n\n");
+//            for (AttributeType attributeType : featureType.getAttributeTypes()){
+//                System.out.println("[" + attributeType.getId() + "]:" + attributeType.getName() + "\nDescription: " + attributeType.getDescription() + "\n");
+//            }
+//        }
+//    }
+//
 }
