@@ -52,8 +52,7 @@ public class Sorter {
                 for (AttributeType attributeType : featureType.getAttributeTypes()){
                     writer.write("[" + attributeType.getId() + "]:" + attributeType.getName() + "\nDescription: "
                             + attributeType.getDescription() + "\nTypeDesc:" + attributeType.getType().getDescription()
-                            + "\n" + attributeType.getType().getName() + "\n" + attributeType.getType().getId() + "\n"
-                            ++"\n");
+                            + "\n" + attributeType.isEnum());
                 }
             }
             writer.write("END");
