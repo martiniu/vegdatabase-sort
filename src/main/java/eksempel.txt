@@ -23,7 +23,7 @@ lik
 Vegbredde med egenskapen dekkbredde større eller lik 16
 OG der antall kjørefelt er lik 4
 
-https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555>16"&overlapp=482(5192=6)
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555>16"&overlapp=482(5192=4)
 
 583 (vegbredde)
 egenskap
@@ -48,22 +48,4 @@ https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 
 ===LOGIKK===
 Over ^ OG der kommune er 301,220,219,602,626 (Oslo, Asker, Bærum, Drammen, Lier)
 
-https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&overlapp=536(4584=219)
-
-https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&overlapp=
-
-&overlapp=536(4584=219)
-
-532 (vegreferanse)
-egenskap
-4566 (vegkategori)
-lik
-5492 (europavei)
-og
-4568 (vegnummer)
-lik
-18 (vegnummer 18)
-og
-4592 (kommunenummer)
-lik
-301 (oslo)
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"

@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="32389e7f-ded3-4281-8c74-17cafc2b6ead" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/egenskaper2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/egenskaper2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/egenskaper.txt" beforeDir="false" afterPath="$PROJECT_DIR$/egenskaper.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/egenskaper2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/python/script.py" beforeDir="false" afterPath="$PROJECT_DIR$/python/script.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Sorter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Sorter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/eksempel.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/eksempel.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Sorter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Sorter.class" afterDir="false" />
@@ -91,7 +93,8 @@
       <workItem from="1566196801618" duration="19551000" />
       <workItem from="1566297434068" duration="1445000" />
       <workItem from="1566305333862" duration="2349000" />
-      <workItem from="1566369322205" duration="10060000" />
+      <workItem from="1566369322205" duration="11382000" />
+      <workItem from="1566390803294" duration="2448000" />
     </task>
     <servers />
   </component>

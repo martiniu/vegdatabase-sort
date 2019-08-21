@@ -16,7 +16,7 @@ import webbrowser
 # 0_0 Grønn
 # 2_2 Rødt
 # 1_0 Blå 
-# 0_1 Blå?
+# 0_1 Blå?@
 
 
 dekkebredde = input("Dekkebredde større enn: ")
