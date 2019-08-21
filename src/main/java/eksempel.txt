@@ -1,31 +1,29 @@
+======
+Trafikkulykke med egenskapen alvorligste skadegrad lik "6429"
+OG der fartsgrense med egenskapen fartsgrense lik "2738"
+OG som befant seg samme sted som tunnelløp
+
 https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/570?egenskap="5074=6429"&overlapp=105(2021=2738)&overlapp=67
 
 570 (trafikkulykke)
 egenskap
 5074 (alvorligste skadegrad)
 lik
-6429 (tall, ikke egenskap)
+6429 (skadegrad)
 & overlapp
 egenskap
 105 (fartsgrense)
 2021 (fartsgrense, under fartsgrense)
 lik
-2738 (???? 80km)
+2738 (80km)
 & overlapp
 67 (tunnelløp)
 
-Trafikkulykke med egenskapen alvorligste skadegrad lik "6429"
-OG der fartsgrense med egenskapen fartsgrense lik "2738"
-OG som befant seg samme sted som tunnelløp
-
-https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/570?egenskap="5074=1"&overlapp=105(2021=2738)&overlapp=67
-
-
+======
 Vegbredde med egenskapen dekkbredde større eller lik 16
 OG der antall kjørefelt er lik 4
 
-
-https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/583?egenskap="5555>16"&overlapp=482(5192=6)
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555>16"&overlapp=482(5192=4)
 
 583 (vegbredde)
 egenskap
@@ -38,3 +36,25 @@ egenskap
 5192 (antall kjørefelt)
 lik
 4 (tall)
+
+======
+Vegreferanse med egenskapen kategori lik Europavei/E
+OG der veinummer er 18
+
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"
+
+
+======
+Veg der kommune er 301,220,219,602,626 (Oslo, Asker, Bærum, Drammen, Lier)
+
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/536.json?kommune=301&kommune=220&kommune=219&kommune=602&kommune=626
+
+======
+Veg E18 i kommunene den treffer fra drammen til oslo
+
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626
+
+
+======
+Veg E18 i kommunene den treffer fra drammen til oslo der antall kjørefelt er 4 og dekkebredde større eller lik 16
+

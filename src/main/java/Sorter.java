@@ -1,8 +1,11 @@
 import no.vegvesen.nvdbapi.client.clients.ClientFactory;
 import no.vegvesen.nvdbapi.client.clients.RoadObjectClient;
 import no.vegvesen.nvdbapi.client.model.datakatalog.AttributeType;
+import no.vegvesen.nvdbapi.client.model.datakatalog.AttributeTypeParameters;
 import no.vegvesen.nvdbapi.client.model.datakatalog.FeatureType;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Attribute;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
+import org.w3c.dom.Attr;
 
 import java.io.*;
 
@@ -45,15 +48,21 @@ public class Sorter {
      */
     static void writeRoadObjectsFull(){
         try {
-            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("egenskaper2.txt"), "utf-8"));
+            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("egenskaper.txt"), "utf-8"));
 
             for (FeatureType featureType : roadObjectClient.getDatakatalog().getFeatureTypes()){
+
                 writer.write("\n===[" + featureType.getId() + "]:" + featureType.getName() + "===\n");
+
                 for (AttributeType attributeType : featureType.getAttributeTypes()){
-                    writer.write("[" + attributeType.getId() + "]:" + attributeType.getName() + "\nDescription: "
-                            + attributeType.getDescription() + "\nTypeDesc:" + attributeType.getType().getDescription()
-                            + "\n" + attributeType.getType().getName() + "\n" + attributeType.getType().getId() + "\n"
-                            ++"\n");
+
+                    writer.write("[" + attributeType.getId() + "]:"
+                            + attributeType.getName()
+                            +  " - " + attributeType.getType().getName() + "\n");
+
+//                    for (Attribute attribute : roadObjectClient.getAttributes(featureType.getId(), attributeType.getId())){
+//                        writer.write("enumID:" + attribute.getEnumId() + "- attValue:" + attribute.getValue() + "- attName:" + attribute.getTypeName());
+//                    }
                 }
             }
             writer.write("END");

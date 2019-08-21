@@ -19,7 +19,7 @@ from PyQt5.QtCore import pyqtSlot
 # 0_0 Grønn
 # 2_2 Rødt
 # 1_0 Blå 
-# 0_1 Blå?
+# 0_1 Blå?@
 
 class App(QMainWindow):
 
