@@ -1,61 +1,96 @@
-======
-Trafikkulykke med egenskapen alvorligste skadegrad lik "6429"
-OG der fartsgrense med egenskapen fartsgrense lik "2738"
-OG som befant seg samme sted som tunnelløp
+Base: https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/
 
+======
+Trafikkulykke med egenskapen alvorligste skadegrad lik "6429" der fartsgrense er 80km/t som var på samme sted som et tunnelløp:
 https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/570?egenskap="5074=6429"&overlapp=105(2021=2738)&overlapp=67
 
-570 (trafikkulykke)
-egenskap
-5074 (alvorligste skadegrad)
-lik
-6429 (skadegrad)
-& overlapp
-egenskap
-105 (fartsgrense)
-2021 (fartsgrense, under fartsgrense)
-lik
-2738 (80km)
-& overlapp
-67 (tunnelløp)
+570     - trafikkulykke
+5074    - alvorligste skadegrad
+6429    - skadegrad verdi
+105     - fartsgrense
+2021    - fartsgrense
+2738    - 80km/t
+67      - tunnelløp
 
 ======
-Vegbredde med egenskapen dekkbredde større eller lik 16
-OG der antall kjørefelt er lik 4
-
+Vegbredde med dekkbredde større eller lik 16 der antall kjørefelt er lik 4:
 https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555>16"&overlapp=482(5192=4)
 
-583 (vegbredde)
-egenskap
-5555 (dekkebredde)
-lik eller større
-16
-& overlapp
-egenskap
-482 (trafikkregistreringsstasjon)
-5192 (antall kjørefelt)
-lik
-4 (tall)
+583     - vegbredde
+5555    - dekkebredde
+16      - 16 meter
+482     - trafikkregistreringsstasjon
+5192    - antall kjørefelt
+4       - tall
 
 ======
-Vegreferanse med egenskapen kategori lik Europavei/E
-OG der veinummer er 18
+Alle vegreferanser på E18 som er eksisterende vei:
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18 AND 4570=5506"
 
-https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"
-
+4570 - Vegstatusober
+5506 - Eksisterende veg
 
 ======
-Veg der kommune er 301,220,219,602,626 (Oslo, Asker, Bærum, Drammen, Lier)
-
+Kommunene Oslo, Asker, Bærum, Drammen og Lier:
 https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/536.json?kommune=301&kommune=220&kommune=219&kommune=602&kommune=626
 
+302 - kommune oslo
+220 - kommune asker
+219 - kommune bærum
+602 - kommune drammen
+626 - kommune lier
+
 ======
-Veg E18 i kommunene den treffer fra drammen til oslo
-
-https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626
-
+Veg E18 i kommunene den treffer fra Drammen til Oslo som er eksisterende veg:
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18 AND 4570=5506"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626
 
 ======
-Veg E18 i kommunene den treffer fra drammen til oslo der antall kjørefelt er større eller lik 4 og dekkebredde større eller lik 16
-
+Veg E18 i kommunene den treffer fra Drammen til Oslo der antall kjørefelt er større eller lik 4 og dekkebredde større eller lik 16:
 https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5555>=16)&overlapp=482(5192>=4)
+
+532     - vegreferanse
+4566    - vegkategori
+5492    - europaveg
+4568    - vegnummer
+18      - 18
+302     - kommune oslo
+220     - kommune asker
+219     - kommune bærum
+602     - kommune drammen
+626     - kommune lier
+583     - vegbredde
+5555    - dekkebredde
+16      - 16 meter
+482     - trafikkregistreringsstasjon
+5192    - 4 felt
+
+
+======
+Veg E18 i kommunene fra Drammen til Oslo der dekkebredde er større eller lik X (5555 >= X):
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5555>=X)
+
+Mindre enn:
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5555<X)
+
+Veg E18 i kommunene fra Drammen til Oslo der vegbredde totalt er større eller lik X (5264 >= X):
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5264>=X)
+
+Mindre enn:
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5264<X)
+
+Veg E18 i kommunene fra Drammen til Oslo der kjørebanebredde er større eller lik X (5556 >= X):
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5556>=X)
+
+Mindre enn:
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5556<X)
+
+======
+Veg E18 -||- som er eksisterende veg(ekskluderer sykkelveier og gangfelt osv.)
+
+Dekkebredde     - 5555
+Vegbreddetotal  - 5264
+Kjørebanebredde - 5556
+
+For eksempel dekkebredde større enn 16:
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18 AND 4570=5506"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5555<=16)
+

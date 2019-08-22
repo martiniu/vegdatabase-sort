@@ -1,0 +1,31 @@
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18 AND 4570=5506"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5555<=16)
+
+Alle vegreferanser på E18 som er eksisterende veg(ikke sykkelvei og sånt), avgrenset til kommunene fra Drammen
+til og med Oslo, der dekkebredde er mindre enn eller lik 16 meter.
+
+Kort forklaring av de ulike tallene som er brukt i linken:
+532     - vegreferanse
+4566    - vegkategori
+5492    - europaveg
+4568    - vegnummer
+18      - 18
+302     - kommune oslo
+220     - kommune asker
+219     - kommune bærum
+602     - kommune drammen
+626     - kommune lier
+583     - vegbredde
+
+Ulike breddetyper:
+5555    - dekkebredde
+5264    - vegbredde, total
+5556    - kjørebanebredde
+
+Dette skal byttes ut i linken over, der 5555 skal være breddetypen, fulgt av operator, fulgt av antall meter input
+&overlapp=583(5555<=16)
+
+Denne delen kan også fjernes helt fordi det er på slutten av linken, da får du kun veien og ingen bredde begrensning.
+
+
+
+
