@@ -70,13 +70,19 @@ class App(QMainWindow):
     #self.textbox.setText("")
     base_url = "https://www.vegvesen.no/vegkart/vegkart/#kartlag:geodata"
 
-    #todo:  add different ID for vegbredde totalt(5264), dekkebredde(5555), kjørebanebredde(5556)
-    #bug:   when adding a value to the input box, it will search correctly
-    #       the first time, but not the second, the value will be blank in the browser filter bar
-    edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+str(vegbredde_value)+"))),id:583))"
+    #todo:  add different type of roads to the url depending on what the user wrote
+    #bug:   when adding a value to the input box, it will search correctly the first time,
+    #       but not the second, the value will be blank in the browser filter bar
+    vegbredde_totalt = 5264
+    dekkebredde = 5555
+    kjørebanebredde = 5556
+
+    # cut the link into another piece, easier to change roadtype and other values
+    edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),"
+    type_url = "(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+str(vegbredde_value)+"))),id:583))"
     constant_url = "/hvor:(kommune:(~301,220,219,602,626))/@250164,6638305,9/vegobjekt:83641744:40a744:583"
 
-    webbrowser.open(base_url+edit_url+constant_url)
+    webbrowser.open(base_url+edit_url+type_url+constant_url)
 
 
 if __name__ == '__main__':
