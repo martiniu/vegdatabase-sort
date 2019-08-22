@@ -94,9 +94,10 @@ class App(QMainWindow):
 
   @pyqtSlot()
   def vegkart_button_click(self):
-    vegbredde_value = self.vegbredde.text()
+    vegbredde_value = self.vegbredde_vegkart.text()
+    self.vegbredde_vegkart.setText("")
     #QMessageBox.question(self, 'Message - pythonspot.com', "You typed: " + textboxValue, QMessageBox.Ok, QMessageBox.Ok)
-    #self.textbox.setText("")
+    
     base_url = "https://www.vegvesen.no/vegkart/vegkart/#kartlag:geodata"
 
     #todo:  add different type of roads to the url depending on what the user wrote
@@ -115,6 +116,7 @@ class App(QMainWindow):
   
 
   def tekstbasert_button_click(self):
+    pass
 
 
 
