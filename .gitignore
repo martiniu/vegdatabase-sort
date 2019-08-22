@@ -1,1 +1,5 @@
-
+.idea
+.gitattributes
+mavenvegdatasort.iml
+/target
+.DS_Store
