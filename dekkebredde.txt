@@ -26,6 +26,16 @@ Dette skal byttes ut i linken over, der 5555 skal være breddetypen, fulgt av op
 
 Denne delen kan også fjernes helt fordi det er på slutten av linken, da får du kun veien og ingen bredde begrensning.
 
+ReferanseID:
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/532.json?egenskap="4566=5492 AND 4568=18 AND 4570=5506"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=583(5555<=16)
+
+DekkebreddeID:
+https:/www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555<=16"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=532(4566=5492 AND 4568=18 AND 4570=5506)
+
+Både VegReferanse og Dekkebredde har egenskapen kortform:
+Eksempel: 0600 Ev18 hp1 m8969-9605
+
+
 
 
 
