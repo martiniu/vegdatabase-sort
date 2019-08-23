@@ -41,17 +41,18 @@ def loop_site(href):
         loop_site(response['metadata']['neste']['href'])
 
 if __name__ == '__main__':
-    vegbredde = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555>=0"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=532(4566=5492 AND 4568=18 AND 4570=5506)'
-    felt = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482.json?egenskap="5192>=0"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=532(4566=5492 AND 4568=18 AND 4570=5506)'
+    vegbredde_link = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555>=0"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=532(4566=5492 AND 4568=18 AND 4570=5506)'
+    felt_link = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482.json?egenskap="5192>=0"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626&overlapp=532(4566=5492 AND 4568=18 AND 4570=5506)'
 
-    #vegobjekt = {}
-    #loop_site(vegbredde)
-
-    #with open('vegobjekter_vegbredde.json', 'w') as writeobject:
+    # vegobjekt = {}
+    # loop_site(vegbredde_link)
+    #
+    # with open('vegobjekter_vegbredde.json', 'w') as writeobject:
     #    json.dump(vegobjekt, writeobject)
 
+
     vegobjekt = {}
-    loop_site(felt)
+    loop_site(felt_link)
 
     with open('vegobjekter_felt.json', 'w') as writeobject:
         json.dump(vegobjekt, writeobject)
