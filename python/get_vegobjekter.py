@@ -53,14 +53,14 @@ def write_to_file(link, filename):
 
 
 if __name__ == '__main__':
-    #vegbredde_link = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555>=0"&overlapp=532(4566=5492 AND 4568=18 AND 4570=5506)&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
+    #feil_link = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555>=0"&overlapp=532(4566=5492 AND 4568=18 AND 4570=5506)&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
     felt_link = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482.json?kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
-    kommune_link = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583?kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
+    dekkebredde_link = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583?kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
     vegref_link = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?egenskap="4566=5492 AND 4568=18 AND 4570=5506"&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
 
     #vegobjekt = {}
 
-    #write_to_file(vegbredde_link, 'vegobjekter_vegbredde.json')
+    #write_to_file(feil_link, 'vegobjekter_feil.json')
     #write_to_file(felt_link, 'vegobjekter_felt.json')
-    #write_to_file(kommune_link, 'vegobjekter_kommuner.json')
+    #write_to_file(dekkebredde_link, 'vegobjekter_dekkebredde.json')
     #write_to_file(vegref_link, 'vegobjekter_vegref.json')
