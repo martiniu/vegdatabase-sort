@@ -51,6 +51,9 @@ def write_to_file(link, filename):
     with open(filename, 'w') as writeobject:
         json.dump(vegobjekt, writeobject)
 
+def compare_lenkeid(file1, file2):
+    with open(filename, 'r') as readobject:
+
 
 if __name__ == '__main__':
     #feil_link = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583.json?egenskap="5555>=0"&overlapp=532(4566=5492 AND 4568=18 AND 4570=5506)&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
