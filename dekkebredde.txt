@@ -9,7 +9,7 @@ Kort forklaring av de ulike tallene som er brukt i linken:
 5492    - europaveg
 4568    - vegnummer
 18      - 18
-302     - kommune oslo
+301     - kommune oslo
 220     - kommune asker
 219     - kommune bærum
 602     - kommune drammen
