@@ -6,6 +6,7 @@ import no.vegvesen.nvdbapi.client.model.datakatalog.FeatureType;
 import java.io.*;
 
 public class InfoCollectorNVDB {
+
     private static ClientFactory clientFactory;
     private static RoadObjectClient roadObjectClient;
 
