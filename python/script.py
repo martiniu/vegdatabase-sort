@@ -3,8 +3,11 @@ import json
 import sys
 from pprint import pprint
 import webbrowser
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QMainWindow, QMessageBox, QLabel, QTabWidget
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5.Qt import Qt
+import operator
+
 
 # Drammen  -> Oslo
 # 86512932 -> 86513964
@@ -25,10 +28,16 @@ class App(QMainWindow):
 
   def __init__(self):
     super().__init__()
+    QAbstractTableModel.__init__(self, parent=None)
     self.title = 'Nasjonal Vegdatabase'
     self.layout = QVBoxLayout()
     self.window = QWidget()
+
+    with open('vegobjekter.json') as json_file:
+      self.vegobjekter = json.load(json_file)
+    
     self.initUI()
+
 
   def initUI(self):
     self.setWindowTitle(self.title)
@@ -42,82 +51,101 @@ class App(QMainWindow):
     self.vegkart_tab.layout = QVBoxLayout(self)
     self.tekstbasert_tab.layout = QVBoxLayout(self)
 
-    # Vegbredde
-    self.vegbredde_vegkart_label = QLabel('Vegbredde, totalt')
-    self.vegbredde_tekstbasert_label = QLabel('Vegbredde, totalt')
-    self.vegbredde_vegkart = QLineEdit(self)
-    self.vegbredde_tekstbasert = QLineEdit(self)
-    self.vegkart_tab.layout.addWidget(self.vegbredde_vegkart_label)
-    self.vegkart_tab.layout.addWidget(self.vegbredde_vegkart)
-    self.tekstbasert_tab.layout.addWidget(self.vegbredde_tekstbasert_label)
-    self.tekstbasert_tab.layout.addWidget(self.vegbredde_tekstbasert)
+    # Vegkart search layout
+    self.vegkart_label1 = QLabel('Søk etter Dekkebredde som er')
+    self.vegkart_label2 = QLabel('enn')
+    self.vegkart_combo_box = QComboBox(self)
+    self.vegkart_combo_box.addItem('>=')
+    self.vegkart_combo_box.addItem('<')
+    self.vegkart_input_field = QLineEdit(self)
+    self.vegkart_search_button = QPushButton('Søk', self)
+    
+    # Tekstbasert search layout
+    self.tekstbasert_label1 = QLabel('Søk etter Dekkebredde som er')
+    self.tekstbasert_label2 = QLabel('enn')
+    self.tekstbasert_combo_box = QComboBox(self)
+    self.tekstbasert_combo_box.addItem('>=')
+    self.tekstbasert_combo_box.addItem('<')
+    self.tekstbasert_input_field = QLineEdit(self)
+    self.tekstbasert_search_button = QPushButton('Søk', self)
+    
+    # Vegkart search layout assembled
+    self.vegkart_description_layout = QHBoxLayout()
+    self.vegkart_description_layout.addWidget(self.vegkart_label1)
+    self.vegkart_description_layout.addWidget(self.vegkart_combo_box)
+    self.vegkart_description_layout.addWidget(self.vegkart_label2)
+    self.vegkart_description_layout.addWidget(self.vegkart_input_field)
+    self.vegkart_description_layout.addWidget(self.vegkart_search_button)
+    self.vegkart_tab.layout.addLayout(self.vegkart_description_layout)
 
-    # Dekkebredde
-    self.dekkebredde_vegkart_label = QLabel('Dekkebredde')
-    self.dekkebredde_tekstbasert_label = QLabel('Dekkebredde')
-    self.dekkebredde_vegkart = QLineEdit(self)
-    self.dekkebredde_tekstbasert = QLineEdit(self)
-    self.vegkart_tab.layout.addWidget(self.dekkebredde_vegkart_label)
-    self.vegkart_tab.layout.addWidget(self.dekkebredde_vegkart)
-    self.tekstbasert_tab.layout.addWidget(self.dekkebredde_tekstbasert_label)
-    self.tekstbasert_tab.layout.addWidget(self.dekkebredde_tekstbasert)
+    # Tekstbasert search layout assembled
+    self.tekstbasert_description_layout = QHBoxLayout()
+    self.tekstbasert_description_layout.addWidget(self.tekstbasert_label1)
+    self.tekstbasert_description_layout.addWidget(self.tekstbasert_combo_box)
+    self.tekstbasert_description_layout.addWidget(self.tekstbasert_label2)
+    self.tekstbasert_description_layout.addWidget(self.tekstbasert_input_field)
+    self.tekstbasert_description_layout.addWidget(self.tekstbasert_search_button)
+    self.tekstbasert_tab.layout.addLayout(self.tekstbasert_description_layout)
+    
+    # Infotable
+    self.tabell = QTableWidget()
+    self.tabell.setColumnCount(3)
+    self.tabell.setHorizontalHeaderLabels(["Dekkebredde", "Diff. fra input", "Ant. felt"])
+    self.tekstbasert_tab.layout.addWidget(self.tabell)
+    
+    # Infoscreen
+    self.info_label_min = QLabel('Min: \t 0 \t (Minst av alle veier)')
+    self.info_label_max = QLabel('Max: \t 0 \t (Størst av alle veier)')
+    self.info_label_avg = QLabel('Avg: \t 0 \t (Gjennomsnittet av alle veier)')
+    self.info_label_over = QLabel('%> \t 0 \t (% av resultatet som er større enn inputsverdi)')
+    self.info_label_under = QLabel('%< \t 0 \t (% av resultatet som er mindre enn inputsverdi)')
 
-    # Kjørebanebredde
-    self.kjorebanebredde_vegkart_label = QLabel('Kjørebanebredde')
-    self.kjorebanebredde_tekstbasert_label = QLabel('Kjørebanebredde')
-    self.kjorebanebredde_vegkart = QLineEdit(self)
-    self.kjorebanebredde_tekstbasert = QLineEdit(self)
-    self.vegkart_tab.layout.addWidget(self.kjorebanebredde_vegkart_label)
-    self.vegkart_tab.layout.addWidget(self.kjorebanebredde_vegkart)
-    self.tekstbasert_tab.layout.addWidget(self.kjorebanebredde_tekstbasert_label)
-    self.tekstbasert_tab.layout.addWidget(self.kjorebanebredde_tekstbasert)
-
-    # Create a button in the window
-    self.vegkart_button = QPushButton('Søk', self)
-    self.tekstbasert_button = QPushButton('Søk', self)
-    self.vegkart_tab.layout.addWidget(self.vegkart_button)
-    self.tekstbasert_tab.layout.addWidget(self.tekstbasert_button)
-
-    self.vegkart_tab.setLayout(self.vegkart_tab.layout)
+    # Updating tabs layout
+    self.tekstbasert_tab.layout.addWidget(self.info_label_min)
+    self.tekstbasert_tab.layout.addWidget(self.info_label_max)
+    self.tekstbasert_tab.layout.addWidget(self.info_label_avg)
+    self.tekstbasert_tab.layout.addWidget(self.info_label_over)
+    self.tekstbasert_tab.layout.addWidget(self.info_label_under)
     self.tekstbasert_tab.setLayout(self.tekstbasert_tab.layout)
+    self.vegkart_tab.setLayout(self.vegkart_tab.layout)
     self.layout.addWidget(self.tabs)
-
-    # Update Window
     self.window.setLayout(self.layout)
   
-    # connect button to function on_click
-    self.vegkart_button.clicked.connect(self.vegkart_button_click)
-    self.tekstbasert_button.clicked.connect(self.tekstbasert_button_click)
+    # Connect buttons to functions 
+    self.tekstbasert_search_button.clicked.connect(self.calculate_values)
+    self.vegkart_search_button.clicked.connect(self.vegkart_button_click)
+
+    # Show GUI
     self.window.show()
 
 
+  def calculate_values(self):
+    self.populate_table()
+    self.min_value = (min(self.vegobjekter.items(), key=lambda x:x[1]['Dekkebredde']))[1]['Dekkebredde']
+    self.max_value = (max(self.vegobjekter.items(), key=lambda x:x[1]['Dekkebredde']))[1]['Dekkebredde']
+    self.avg_value = sum([value['Dekkebredde']/len(self.vegobjekter) for key,value in self.vegobjekter.items()])
 
-  @pyqtSlot()
+    self.info_label_min.setText('Min: \t'+str(self.min_value)+'\t (Minst av alle veier)')
+    self.info_label_max.setText('Max: \t'+str(self.max_value)+'\t (Størst av alle veier)')
+    self.info_label_avg.setText('Avg: \t'+str(round(self.avg_value,1))+'\t (Gjennomsnittet av alle veier)')
+    #self.info_label_over.setText('%> \t'+str(self.over_value)+'\t (% av resultatet som er større enn inputsverdi)')
+    #self.info_label_under.setText('%< \t'+str(self.under_value)+'\t (% av resultatet som er mindre enn inputsverdi)')
+
+
   def vegkart_button_click(self):
-    vegbredde_value = self.vegbredde_vegkart.text()
-    self.vegbredde_vegkart.setText("")
-    #QMessageBox.question(self, 'Message - pythonspot.com', "You typed: " + textboxValue, QMessageBox.Ok, QMessageBox.Ok)
-    
+    dekkebredde_value = self.vegkart_input_field.text()
+    operator_value = '*3c' if str(self.vegkart_combo_box.currentText()) == '<' else '*3e*3d' 
     base_url = "https://www.vegvesen.no/vegkart/vegkart/#kartlag:geodata"
-
-    #todo:  add different type of roads to the url depending on what the user wrote
-    #bug:   when adding a value to the input box, it will search correctly the first time,
-    #       but not the second, the value will be blank in the browser filter bar
-    vegbredde_totalt = 5264
-    dekkebredde = 5555
-    kjørebanebredde = 5556
-
-    # cut the link into another piece, easier to change roadtype and other values
     edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),"
-    type_url = "(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+str(vegbredde_value)+"))),id:583))"
+    type_url = "(farge:'0_1,filter:(~(operator:'"+str(operator_value)+",type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
     constant_url = "/hvor:(kommune:(~301,220,219,602,626))/@250164,6638305,9/vegobjekt:83641744:40a744:583"
-
     webbrowser.open(base_url+edit_url+type_url+constant_url)
   
 
-  def tekstbasert_button_click(self):
-    pass
-
+  def populate_table(self):
+    self.tabell.setRowCount(len(self.vegobjekter))
+    for row_number, row_data in enumerate(self.vegobjekter):
+      self.tabell.setItem(row_number, 0, QTableWidgetItem(str(self.vegobjekter[row_data]['Dekkebredde'])))
 
 
 if __name__ == '__main__':
