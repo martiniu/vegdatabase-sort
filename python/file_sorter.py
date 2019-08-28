@@ -189,9 +189,17 @@ def merge_dekkebredde_felt():
     dekkebredder_med_felt = copy.deepcopy(dekkebredder)
 
     for d in dekkebredder:
+        felt_liste = []
         for f in felt:
             if dekkebredder_med_felt[d]['veglenkeid'] == felt[f]['veglenkeid']:
-                dekkebredder_med_felt[d]['ant_felt'] = felt[f]['ant_felt']
+                # legg til alle felt i en midlertidlig liste
+                # for hver veglenkeid som matcher, gå gjennom alle ant_felt som matcher og legg til alle i en liste
+                felt_liste.append(felt[f]['ant_felt'])
+                #print(d, ": ", felt[f]['ant_felt'])
+                #dekkebredder_med_felt[d]['ant_felt'] = felt[f]['ant_felt']
+        #print(d, felt_liste)
+        felt_liste = list(dict.fromkeys(felt_liste))
+        dekkebredder_med_felt[d]['ant_felt'] = felt_liste
 
     test_merge = copy.deepcopy(dekkebredder_med_felt)
     write_dict_to_file(test_merge, 'files/merge_dekke_felt.json')
@@ -239,10 +247,10 @@ if __name__ == '__main__':
 
     # write_all_dekkebredder()
     # write_all_felt()
-    # merge_dekkebredde_felt()
-    # write_all_E18()
-    # merge_dekkebredde_felt_vegref()
-    #filter_out_nonvegref()
+    merge_dekkebredde_felt()
+    write_all_E18()
+    merge_dekkebredde_felt_vegref()
+    filter_out_nonvegref()
 
     #get_veglenke_objekter('vegobjekter_dekkebredde.json', 'vegobjekter_felt.json')
     #create_complete_dict('vegobjekter_dekkebredde.json', 'vegobjekter_felt.json')
