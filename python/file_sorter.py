@@ -114,12 +114,16 @@ def create_complete_dict(filename1, filename2):
     pprint(veglenke_filtrert)
     return veglenke_filtrert
 
+def write_dict_to_file(dict, filename):
+    with open(filename, 'w') as writeobject:
+        json.dump(dict, writeobject)
+
 def create_all_dekkebredder():
     oslo = get_file_as_json('files/dekkebredde_oslo.json')
-    asker = get_file_as_json('files/dekkebredde_oslo.json')
-    lier = get_file_as_json('files/dekkebredde_oslo.json')
-    drammen = get_file_as_json('files/dekkebredde_oslo.json')
-    bærum = get_file_as_json('files/dekkebredde_oslo.json')
+    asker = get_file_as_json('files/dekkebredde_asker.json')
+    lier = get_file_as_json('files/dekkebredde_lier.json')
+    drammen = get_file_as_json('files/dekkebredde_drammen.json')
+    bærum = get_file_as_json('files/dekkebredde_bærum.json')
 
     oslo.update(asker)
     oslo.update(lier)
@@ -129,11 +133,23 @@ def create_all_dekkebredder():
     dekkebredder = copy.deepcopy(oslo)
     return dekkebredder
 
-def write_dict_to_file(dict, filename):
-    with open(filename, 'w') as writeobject:
-        json.dump(dict, writeobject)
+def create_all_felt():
+    oslo = get_file_as_json('files/felt_oslo.json')
+    asker = get_file_as_json('files/felt_asker.json')
+    lier = get_file_as_json('files/felt_lier.json')
+    drammen = get_file_as_json('files/felt_drammen.json')
+    bærum = get_file_as_json('files/felt_bærum.json')
 
-def write_all_files():
+    oslo.update(asker)
+    oslo.update(lier)
+    oslo.update(drammen)
+    oslo.update(bærum)
+
+    felt = copy.deepcopy(oslo)
+    return felt
+
+
+def write_all_dekkebredder():
     dekkebredde_oslo = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583?kommune=301'
     dekkebredde_asker = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583?kommune=220'
     dekkebredde_lier = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583?kommune=626'
@@ -149,10 +165,43 @@ def write_all_files():
     dekkebredder = create_all_dekkebredder()
     write_dict_to_file(dekkebredder, 'files/dekkebredder.json')
 
+def write_all_felt():
+    felt_oslo = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=301'
+    felt_asker = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=220'
+    felt_lier = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=626'
+    felt_drammen = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=602'
+    felt_bærum = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=219'
+
+    write_href_to_file(felt_oslo, 'files/felt_oslo.json')
+    write_href_to_file(felt_asker, 'files/felt_asker.json')
+    write_href_to_file(felt_lier, 'files/felt_lier.json')
+    write_href_to_file(felt_drammen, 'files/felt_drammen.json')
+    write_href_to_file(felt_bærum, 'files/felt_bærum.json')
+
+    felt = create_all_felt()
+    write_dict_to_file(felt, 'files/felt.json')
+
+def merge_dekkebredde_felt():
+    dekkebredder = get_file_as_json('files/dekkebredder.json')
+    felt = get_file_as_json('files/felt.json')
+
+    dekkebredder_med_felt = copy.deepcopy(dekkebredder)
+
+    for d in dekkebredder:
+        for f in felt:
+            if dekkebredder_med_felt[d]['veglenkeid'] == felt[f]['veglenkeid']:
+                dekkebredder_med_felt[d]['ant_felt'] = felt[f]['ant_felt']
+
+    test_merge = copy.deepcopy(dekkebredder_med_felt)
+    write_dict_to_file(test_merge, 'files/merge_dekke_felt.json')
+
+
 if __name__ == '__main__':
 
     vegobjekt = {}
-    #pprint(len(dekkebredder))
+
+    merge_dekkebredde_felt()
+    #write_all_felt()
 
     #get_veglenke_objekter('vegobjekter_dekkebredde.json', 'vegobjekter_felt.json')
     #create_complete_dict('vegobjekter_dekkebredde.json', 'vegobjekter_felt.json')
