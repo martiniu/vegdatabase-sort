@@ -201,14 +201,33 @@ def write_all_E18():
     write_href_to_file(vegref, 'files/vegref.json')
 
 
+def filter_merge_by_vegref():
+    merge = get_file_as_json('files/merge_dekke_felt.json')
+    vegref = get_file_as_json('files/vegref.json')
+
+    merge_final = copy.deepcopy(merge)
+
+    for m in merge:
+        for v in vegref:
+            if merge_final[m]['veglenkeid'] == vegref[v]['veglenkeid']:
+                merge_final[m]['vegkategori'] = vegref[v]['vegkategori']
+                merge_final[m]['vegnummer'] = vegref[v]['vegnummer']
+                merge_final[m]['vegstatus'] = vegref[v]['vegstatus']
+
+    
+    final_merge = copy.deepcopy(merge_final)
+    write_dict_to_file(final_merge, 'files/final_merge.json')
+
 if __name__ == '__main__':
 
     vegobjekt = {}
 
-    write_all_E18()
+    filter_merge_by_vegref()
 
+    #write_all_E18()
     #merge_dekkebredde_felt()
     #write_all_felt()
+    #write_all_dekkebredder()
 
     #get_veglenke_objekter('vegobjekter_dekkebredde.json', 'vegobjekter_felt.json')
     #create_complete_dict('vegobjekter_dekkebredde.json', 'vegobjekter_felt.json')
