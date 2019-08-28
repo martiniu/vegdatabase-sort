@@ -32,7 +32,7 @@ class App(QMainWindow):
     self.layout = QVBoxLayout()
     self.window = QWidget()
 
-    with open('files/dekkebredder.json') as json_file:
+    with open('files/dekkebredder_felt_kun_e18.json') as json_file:
       self.vegobjekter = json.load(json_file)
     
     self.initUI()
@@ -140,8 +140,13 @@ class App(QMainWindow):
     self.min_value = (min(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
     self.max_value = (max(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
     self.avg_value = sum([value['dekkebredde'] for value in filtered_values])/len(filtered_values)
-    self.under_value = round(len(filtered_values)/len(self.vegobjekter)*100,1)
-    self.over_value = round(100 - self.under_value,1)
+    
+    if str(self.tekstbasert_combo_box.currentText()) == '<':
+      self.under_value = round(len(filtered_values)/len(self.vegobjekter)*100,1)
+      self.over_value = round(100 - self.under_value,1)
+    else:
+      self.over_value = round(len(filtered_values)/len(self.vegobjekter)*100,1)
+      self.under_value = round(100 - self.over_value,1)
 
     self.info_label_min.setText('Min: \t'+str(self.min_value)+'\t (Minste dekkebredde)')
     self.info_label_max.setText('Max: \t'+str(self.max_value)+'\t (Største dekkebredde)')
@@ -166,8 +171,9 @@ class App(QMainWindow):
   
 
   def populate_table(self, values):
+    print(values)
     self.tabell.setRowCount(len(values))
-    for row_number, row_data in enumerate(values):
+    #for row_number, row_data in enumerate(values):
       #self.tabell.setItem(row_number, 0, QTableWidgetItem(str(self.vegobjekter[row_data]['Dekkebredde'])))
       #print(row_number, row_data)
 
