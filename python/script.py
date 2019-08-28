@@ -32,7 +32,7 @@ class App(QMainWindow):
     self.layout = QVBoxLayout()
     self.window = QWidget()
 
-    with open('files/dekkebredder_felt_kun_e18.json') as json_file:
+    with open('files/query_vegref_med_felt.json') as json_file:
       self.vegobjekter = json.load(json_file)
     
     self.initUI()
@@ -117,14 +117,6 @@ class App(QMainWindow):
     # Show GUI
     self.window.show()
 
-
-  def tesstt(self):
-    print(self.vegkart_input_field.text())
-    print(type(self.vegkart_input_field.text()))
-    print(type(int(self.vegkart_input_field.text())))
-    #print(self.filter_by_threshold())
-    #print(len(self.filter_by_threshold()))
-
   
   def filter_by_threshold(self):
     # This is python one-liner magic, if it does not make any sense to you, google "python list comprehension" and "python ternary operators"
@@ -166,16 +158,22 @@ class App(QMainWindow):
     self.tekstbasert_input_field.setText(dekkebredde_value)
     self.tekstbasert_combo_box.setCurrentText(self.vegkart_combo_box.currentText())
 
-    #webbrowser.open(base_url+edit_url+type_url+constant_url)
-    #self.calculate_values()
+    webbrowser.open(base_url+edit_url+type_url+constant_url)
+    self.calculate_values()
   
 
   def populate_table(self, values):
-    print(values)
     self.tabell.setRowCount(len(values))
-    #for row_number, row_data in enumerate(values):
-      #self.tabell.setItem(row_number, 0, QTableWidgetItem(str(self.vegobjekter[row_data]['Dekkebredde'])))
-      #print(row_number, row_data)
+    for row_number, row_data in enumerate(values):
+      for col_number, data in enumerate(row_data):
+        if data=='dekkebredde':
+          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(values[row_number][data])))
+        elif data=='ant_felt':
+          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(values[row_number][data])))
+        else:
+          dekkebredde = float(values[row_number]['dekkebredde'])
+          diff = round(dekkebredde-float(self.tekstbasert_input_field.text()),1)
+          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(diff)))
 
 
 if __name__ == '__main__':
