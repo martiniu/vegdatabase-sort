@@ -6,7 +6,6 @@ import webbrowser
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.Qt import Qt
-import operator
 
 
 # Drammen  -> Oslo
@@ -33,7 +32,7 @@ class App(QMainWindow):
     self.layout = QVBoxLayout()
     self.window = QWidget()
 
-    with open('vegobjekter.json') as json_file:
+    with open('files/dekkebredder.json') as json_file:
       self.vegobjekter = json.load(json_file)
     
     self.initUI()
@@ -94,9 +93,9 @@ class App(QMainWindow):
     self.tekstbasert_tab.layout.addWidget(self.tabell)
     
     # Infoscreen
-    self.info_label_min = QLabel('Min: \t 0 \t (Minst av alle veier)')
-    self.info_label_max = QLabel('Max: \t 0 \t (Størst av alle veier)')
-    self.info_label_avg = QLabel('Avg: \t 0 \t (Gjennomsnittet av alle veier)')
+    self.info_label_min = QLabel('Min: \t 0 \t (Minste dekkebredde)')
+    self.info_label_max = QLabel('Max: \t 0 \t (Største dekkebredde)')
+    self.info_label_avg = QLabel('Avg: \t 0 \t (Gjennomsnittsbredde)')
     self.info_label_over = QLabel('%> \t 0 \t (% av resultatet som er større enn inputsverdi)')
     self.info_label_under = QLabel('%< \t 0 \t (% av resultatet som er mindre enn inputsverdi)')
 
@@ -119,17 +118,36 @@ class App(QMainWindow):
     self.window.show()
 
 
-  def calculate_values(self):
-    self.populate_table()
-    self.min_value = (min(self.vegobjekter.items(), key=lambda x:x[1]['Dekkebredde']))[1]['Dekkebredde']
-    self.max_value = (max(self.vegobjekter.items(), key=lambda x:x[1]['Dekkebredde']))[1]['Dekkebredde']
-    self.avg_value = sum([value['Dekkebredde']/len(self.vegobjekter) for key,value in self.vegobjekter.items()])
+  def tesstt(self):
+    print(self.vegkart_input_field.text())
+    print(type(self.vegkart_input_field.text()))
+    print(type(int(self.vegkart_input_field.text())))
+    #print(self.filter_by_threshold())
+    #print(len(self.filter_by_threshold()))
 
-    self.info_label_min.setText('Min: \t'+str(self.min_value)+'\t (Minst av alle veier)')
-    self.info_label_max.setText('Max: \t'+str(self.max_value)+'\t (Størst av alle veier)')
-    self.info_label_avg.setText('Avg: \t'+str(round(self.avg_value,1))+'\t (Gjennomsnittet av alle veier)')
-    #self.info_label_over.setText('%> \t'+str(self.over_value)+'\t (% av resultatet som er større enn inputsverdi)')
-    #self.info_label_under.setText('%< \t'+str(self.under_value)+'\t (% av resultatet som er mindre enn inputsverdi)')
+  
+  def filter_by_threshold(self):
+    # This is python one-liner magic, if it does not make any sense to you, google "python list comprehension" and "python ternary operators"
+    return [value for key,value in self.vegobjekter.items() if value['dekkebredde'] < int(self.tekstbasert_input_field.text())] \
+      if str(self.tekstbasert_combo_box.currentText()) == '<' \
+      else [value for key,value in self.vegobjekter.items() if value['dekkebredde'] >= int(self.tekstbasert_input_field.text())]
+
+
+  def calculate_values(self):
+    filtered_values = self.filter_by_threshold()
+    self.populate_table(filtered_values)
+
+    self.min_value = (min(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
+    self.max_value = (max(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
+    self.avg_value = sum([value['dekkebredde'] for value in filtered_values])/len(filtered_values)
+    self.under_value = round(len(filtered_values)/len(self.vegobjekter)*100,1)
+    self.over_value = round(100 - self.under_value,1)
+
+    self.info_label_min.setText('Min: \t'+str(self.min_value)+'\t (Minste dekkebredde)')
+    self.info_label_max.setText('Max: \t'+str(self.max_value)+'\t (Største dekkebredde)')
+    self.info_label_avg.setText('Avg: \t'+str(round(self.avg_value,1))+'\t (Gjennomsnittsbredde)')
+    self.info_label_over.setText('%> \t'+str(self.over_value)+'\t (% av resultatet som er større enn inputsverdi)')
+    self.info_label_under.setText('%< \t'+str(self.under_value)+'\t (% av resultatet som er mindre enn inputsverdi)')
 
 
   def vegkart_button_click(self):
@@ -139,13 +157,19 @@ class App(QMainWindow):
     edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),"
     type_url = "(farge:'0_1,filter:(~(operator:'"+str(operator_value)+",type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
     constant_url = "/hvor:(kommune:(~301,220,219,602,626))/@250164,6638305,9/vegobjekt:83641744:40a744:583"
-    webbrowser.open(base_url+edit_url+type_url+constant_url)
+
+    self.tekstbasert_input_field.setText(dekkebredde_value)
+    self.tekstbasert_combo_box.setCurrentText(self.vegkart_combo_box.currentText())
+
+    #webbrowser.open(base_url+edit_url+type_url+constant_url)
+    #self.calculate_values()
   
 
-  def populate_table(self):
-    self.tabell.setRowCount(len(self.vegobjekter))
-    for row_number, row_data in enumerate(self.vegobjekter):
-      self.tabell.setItem(row_number, 0, QTableWidgetItem(str(self.vegobjekter[row_data]['Dekkebredde'])))
+  def populate_table(self, values):
+    self.tabell.setRowCount(len(values))
+    for row_number, row_data in enumerate(values):
+      #self.tabell.setItem(row_number, 0, QTableWidgetItem(str(self.vegobjekter[row_data]['Dekkebredde'])))
+      #print(row_number, row_data)
 
 
 if __name__ == '__main__':
