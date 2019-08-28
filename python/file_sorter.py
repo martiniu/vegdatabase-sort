@@ -195,12 +195,19 @@ def merge_dekkebredde_felt():
     test_merge = copy.deepcopy(dekkebredder_med_felt)
     write_dict_to_file(test_merge, 'files/merge_dekke_felt.json')
 
+def write_all_E18():
+    vegref = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/532?egenskap=(4566=5492 AND 4568=18 AND 4570=5506)'
+
+    write_href_to_file(vegref, 'files/vegref.json')
+
 
 if __name__ == '__main__':
 
     vegobjekt = {}
 
-    merge_dekkebredde_felt()
+    write_all_E18()
+
+    #merge_dekkebredde_felt()
     #write_all_felt()
 
     #get_veglenke_objekter('vegobjekter_dekkebredde.json', 'vegobjekter_felt.json')
