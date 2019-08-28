@@ -34,7 +34,7 @@ def create_object_from_href(href):
 
     # if 1000 objects were returned, get the link to the next batch of objects and loop through it
     if response['metadata']['returnert'] == 1000:
-        response = requests.get(response['metadata']['neste']['href']).json()
+        #response = requests.get(response['metadata']['neste']['href']).json()
         create_object_from_href(response['metadata']['neste']['href'])
 
 def write_href_to_file(link, filename):
@@ -169,13 +169,40 @@ def filter_out_nonvegref():
 
     write_dict_to_file(final_copy, 'files/dekkebredder_felt_kun_e18.json')
 
+def write_query_vegref():
+    query_vegref = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583?egenskap="5555>=0"&vegreferanse=EV18&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
+
+    write_href_to_file(query_vegref, 'files/query_vegref_uten_felt.json')
+
+def merge_query_vegref_felt():
+    query_vegref = get_file_as_json('files/query_vegref_uten_felt.json')
+    felt = get_file_as_json('files/felt_alle.json')
+
+    query_vegref_copy = copy.deepcopy(query_vegref)
+
+    for d in query_vegref:
+        felt_liste = []
+        for f in felt:
+            if query_vegref_copy[d]['veglenkeid'] == felt[f]['veglenkeid']:
+                # legg til alle antall felt i en midlertidlig liste per dekkebredde objekt
+                felt_liste.append(felt[f]['ant_felt'])
+
+        felt_liste = list(dict.fromkeys(felt_liste))
+        query_vegref_copy[d]['ant_felt'] = felt_liste
+
+    test_merge = copy.deepcopy(query_vegref_copy)
+    write_dict_to_file(test_merge, 'files/query_vegref_med_felt.json')
+
+
 if __name__ == '__main__':
 
     vegobjekt = {}
 
     #write_all_dekkebredder()
     #write_all_felt()
-    merge_dekkebredde_felt()
-    write_all_E18()
-    merge_dekkebredde_felt_vegref()
-    filter_out_nonvegref()
+    #merge_dekkebredde_felt()
+    #write_all_E18()
+    #merge_dekkebredde_felt_vegref()
+    #filter_out_nonvegref()
+    write_query_vegref()
+    merge_query_vegref_felt()
