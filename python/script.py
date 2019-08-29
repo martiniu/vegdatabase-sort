@@ -34,7 +34,7 @@ class App(QMainWindow):
 
     with open('files/query_vegref_med_felt.json') as json_file:
       self.vegobjekter = json.load(json_file)
-    
+      
     self.initUI()
 
 
@@ -129,9 +129,12 @@ class App(QMainWindow):
     filtered_values = self.filter_by_threshold()
     self.populate_table(filtered_values)
 
-    self.min_value = (min(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
-    self.max_value = (max(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
-    self.avg_value = sum([value['dekkebredde'] for value in filtered_values])/len(filtered_values)
+    if len(filtered_values) != 0:
+      self.min_value = (min(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
+      self.max_value = (max(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
+      self.avg_value = sum([value['dekkebredde'] for value in filtered_values])/len(filtered_values)
+    else:
+      self.min_value, self.max_value, self.avg_value = 0,0,0
     
     if str(self.tekstbasert_combo_box.currentText()) == '<':
       self.under_value = round(len(filtered_values)/len(self.vegobjekter)*100,1)
@@ -149,17 +152,22 @@ class App(QMainWindow):
 
   def vegkart_button_click(self):
     dekkebredde_value = self.vegkart_input_field.text()
-    operator_value = '*3c' if str(self.vegkart_combo_box.currentText()) == '<' else '*3e*3d' 
-    base_url = "https://www.vegvesen.no/vegkart/vegkart/#kartlag:geodata"
-    edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),"
-    type_url = "(farge:'0_1,filter:(~(operator:'"+str(operator_value)+",type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
-    constant_url = "/hvor:(kommune:(~301,220,219,602,626))/@250164,6638305,9/vegobjekt:83641744:40a744:583"
+    base_url = "https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata"
+    edit_url, edit_url2, edit_url3 = "","",""
 
+    if str(self.vegkart_combo_box.currentText()) == '<':
+      edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),"
+      edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
+      edit_url3 = "/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@253703,6648215,12"
+    else:
+      edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),"
+      edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
+      edit_url3 = "/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@253703,6648215,12"
+    
     self.tekstbasert_input_field.setText(dekkebredde_value)
     self.tekstbasert_combo_box.setCurrentText(self.vegkart_combo_box.currentText())
-
-    webbrowser.open(base_url+edit_url+type_url+constant_url)
     self.calculate_values()
+    webbrowser.open(base_url+edit_url+edit_url2+edit_url3)
   
 
   def populate_table(self, values):
