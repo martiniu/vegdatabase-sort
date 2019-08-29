@@ -1,0 +1,5 @@
+Ev18, der dekkebredde er større eller lik 22 meter, vei som er kortere er rød, vei som er lik eller større er blå:
+https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'1_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~22))),id:583))/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@246349,6648183,8
+
+Ev18, der dekkebredde er mindre enn 22 meter, vei som er kortere er rød, vei som er større er blå:
+https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata/hva:(~(farge:'1_1,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'2_2,filter:(~(operator:'*3c,type_id:5555,verdi:(~22))),id:583))/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@256753,6648504,10.699671583683077
