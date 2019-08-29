@@ -21,3 +21,15 @@ Contains a list of query examples, with short explanations of each id and value 
 # java
 - InfoCollectorNVDB.java
   - Contains a couple methods to collect important information about RoadObject types and  their Attribute types. This method prints the information to objectwiki.txt.
+  
+# Getting started
+
+- Step 1: Download Python 3.7
+- Step 2: Install python requirements
+  ```
+  pip3 install -r requirements.txt
+  ```
+- Step 3: Run `script.py` from python folder
+  ```
+  python3 script.py
+  ```
