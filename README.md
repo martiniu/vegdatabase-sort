@@ -3,10 +3,6 @@ Sorts and analyzes Nasjonal vegdatabank with the vegdatabase api (https://api.ve
 
 To use this program, you will firstly need to run ```file_sorter.py``` in order to update data to be as new as possible. After that you can run ```script.py``` and input your desired value.
 
-# How to use
-**Install python3**
-- If you have brew, run ```brew install python3``` followed by ```python3 --version```. The version should be 3.7.4 or newer. If you don't have brew, search Google for ```install brew <operating system>``` and follow the first guide. When writing ```brew doctor```, the command line should say ```Your system is ready to brew```
-
 # objectwiki.txt
 Contains a list of all RoadObjects as well as each RoadObjects' attributeType and their id. This is the easiest way to understand what id belongs to what name. It makes it easier to create queries, simply search for the id or the name of the object or feature you are looking for.
 
