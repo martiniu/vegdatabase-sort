@@ -27,15 +27,16 @@ Contains a list of query examples, with short explanations of each id and value 
 # java
 - **InfoCollectorNVDB.java** and **Main.java**
   - Contains a couple methods to collect important information about RoadObject types and  their Attribute types. This method prints the information to objectwiki.txt.
-  
+
 # Getting started
 
-- Step 1: Download Python 3.7
-- Step 2: Install python requirements
+- **Step 1: Download Python 3.7**
+  - If you have brew, run ```brew install python3``` followed by ```python3 --version```. The version should be 3.7.4 or newer. If you don't have brew, search Google for ```install brew <operating system>``` and follow the first guide. When writing ```brew doctor```, the command line should say ```Your system is ready to brew```
+- **Step 2: Install python requirements**
   ```
-  pip3 install -r requirements.txt
+  pip3 install PyQt5==5.13.0
   ```
-- Step 3: Run `script.py` from python folder
+- **Step 3: Run** ```script.py``` **from python folder**
   ```
   python3 script.py
   ```
