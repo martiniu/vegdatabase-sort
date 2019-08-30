@@ -98,7 +98,7 @@ def write_all_felt():
 
 def write_query_vegref():
     # writes the main "big" query to avoid a million files to sort and compare
-    query_vegref = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583?egenskap="5555>=0"&vegreferanse=EV18&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
+    query_vegref = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583?egenskap="5555>=0"&vegreferanse=Ev18hp1-hp49&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
 
     write_href_to_file(query_vegref, 'files/query_vegref_uten_felt.json')
 
