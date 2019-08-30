@@ -149,17 +149,15 @@ class App(QMainWindow):
     """
     dekkebredde_value = self.vegkart_input_field.text()
     base_url = "https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata"
-    edit_url, edit_url2, edit_url3 = "","",""
-
+    edit_url2 = ""
+    edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),"
+    edit_url3 = "/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@253703,6648215,12"
+    
     if str(self.vegkart_combo_box.currentText()) == '<':
-      edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),"
       edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
-      edit_url3 = "/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@253703,6648215,12"
     else:
-      edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),"
       edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
-      edit_url3 = "/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@253703,6648215,12"
-
+      
     self.tekstbasert_input_field.setText(dekkebredde_value)
     self.tekstbasert_combo_box.setCurrentText(self.vegkart_combo_box.currentText())
     self.calculate_values()
@@ -173,9 +171,13 @@ class App(QMainWindow):
     """
     self.tabell.setRowCount(len(values))
 
-    vegk_link = "https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:nib/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),"
-    vegk_link2 = "(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),"
-    vegk_link3 = "(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~27))),id:583))/hvor:(fylke:(~3),"
+    veg_link = "https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:nib/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),"
+    veg_link2 = "(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),"
+    veg_link3 = ""
+    if str(self.tekstbasert_combo_box.currentText()) == '<':
+      veg_link3 = "(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~"+self.tekstbasert_input_field.text()+"))),id:583))/hvor:(fylke:(~3),"
+    else:
+      veg_link3 = "(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+self.tekstbasert_input_field.text()+"))),id:583))/hvor:(fylke:(~3),"
     
     for row_number, row_data in enumerate(values):
       data = values[row_number]
@@ -190,7 +192,7 @@ class App(QMainWindow):
           self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(data[1]['ant_felt'])))
         elif col_number == 3:
           vegkart_objectid_button = QPushButton('Søk', self)
-          vegkart_objectid_button.clicked.connect(lambda checked, arg=data[0]: webbrowser.open(vegk_link+vegk_link2+vegk_link3+"kommune:(~602,626,219,220))/@261273,6645269,8/vegobjekt:"+str(arg)+":40a744:583"))
+          vegkart_objectid_button.clicked.connect(lambda checked, arg=data[0]: webbrowser.open(veg_link+veg_link2+veg_link3+"kommune:(~602,626,219,220))/@261273,6645269,8/vegobjekt:"+str(arg)+":40a744:583"))
           self.tabell.setCellWidget(row_number, col_number, vegkart_objectid_button)
 
 
