@@ -1,27 +1,9 @@
-import requests
 import json
 import sys
-from pprint import pprint
 import webbrowser
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from PyQt5.Qt import Qt
 
-
-# Drammen  -> Oslo
-# 86512932 -> 86513964
-
-# for veg_objekt in range(86512932, 86513964):
-#   response = requests.get('https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583/'+str(veg_objekt)).json()
-#   for egenskap in response['egenskaper']:
-#     if egenskap['navn']=='Kjørebanebredde':
-#       pprint(egenskap['verdi'])
-
-
-# 0_0 Grønn
-# 2_2 Rødt
-# 1_0 Blå
-# 0_1 Blå?
 
 class App(QMainWindow):
 
@@ -34,7 +16,7 @@ class App(QMainWindow):
 
     with open('files/query_vegref_med_felt.json') as json_file:
       self.vegobjekter = json.load(json_file)
-      
+    
     self.initUI()
 
 
@@ -88,8 +70,8 @@ class App(QMainWindow):
     
     # Infotable
     self.tabell = QTableWidget()
-    self.tabell.setColumnCount(3)
-    self.tabell.setHorizontalHeaderLabels(["Dekkebredde", "Diff. fra input", "Ant. felt"])
+    self.tabell.setColumnCount(4)
+    self.tabell.setHorizontalHeaderLabels(["Dekkebredde", "Diff. fra input", "Ant. felt", "Vegkartobjekt"])
     self.tekstbasert_tab.layout.addWidget(self.tabell)
     
     # Infoscreen
@@ -120,19 +102,20 @@ class App(QMainWindow):
   
   def filter_by_threshold(self):
     # This is python one-liner magic, if it does not make any sense to you, google "python list comprehension" and "python ternary operators"
-    return [value for key,value in self.vegobjekter.items() if value['dekkebredde'] < int(self.tekstbasert_input_field.text())] \
+    return [(key,value) for key,value in self.vegobjekter.items() if value['dekkebredde'] < int(self.tekstbasert_input_field.text())] \
       if str(self.tekstbasert_combo_box.currentText()) == '<' \
-      else [value for key,value in self.vegobjekter.items() if value['dekkebredde'] >= int(self.tekstbasert_input_field.text())]
+      else [(key,value) for key,value in self.vegobjekter.items() if value['dekkebredde'] >= int(self.tekstbasert_input_field.text())]
 
 
   def calculate_values(self):
     filtered_values = self.filter_by_threshold()
+    filtered_values = sorted(filtered_values, key=lambda i:i[1]['dekkebredde'])
     self.populate_table(filtered_values)
 
     if len(filtered_values) != 0:
-      self.min_value = (min(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
-      self.max_value = (max(filtered_values, key=lambda x:x['dekkebredde']))['dekkebredde']
-      self.avg_value = sum([value['dekkebredde'] for value in filtered_values])/len(filtered_values)
+      self.min_value = (min(filtered_values, key=lambda x:x[1]['dekkebredde']))[1]['dekkebredde']
+      self.max_value = (max(filtered_values, key=lambda x:x[1]['dekkebredde']))[1]['dekkebredde']
+      self.avg_value = sum([value[1]['dekkebredde'] for value in filtered_values])/len(filtered_values)
     else:
       self.min_value, self.max_value, self.avg_value = 0,0,0
     
@@ -172,16 +155,47 @@ class App(QMainWindow):
 
   def populate_table(self, values):
     self.tabell.setRowCount(len(values))
+
+    vegk_link = "https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:nib/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),"
+    vegk_link2 = "(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),"
+    vegk_link3 = "(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~27))),id:583))/hvor:(fylke:(~3),"
+    
     for row_number, row_data in enumerate(values):
-      for col_number, data in enumerate(row_data):
-        if data=='dekkebredde':
-          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(values[row_number][data])))
-        elif data=='ant_felt':
-          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(values[row_number][data])))
-        else:
-          dekkebredde = float(values[row_number]['dekkebredde'])
+      #print(row_number, row_data)
+      data = values[row_number]
+      for col_number in range(4):
+        #print(col_number)
+        #print(data)
+        # if data=='dekkebredde':
+        #   self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(values[row_number][data])))
+        # elif data=='ant_felt':
+        #   self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(values[row_number][data])))
+        # elif: data=='Vegkartobjekt'
+        # else:
+        #   dekkebredde = float(values[row_number]['dekkebredde'])
+        #   diff = round(dekkebredde-float(self.tekstbasert_input_field.text()),1)
+        #   self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(diff)))
+        if col_number == 0:
+          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(data[1]['dekkebredde'])))
+        elif col_number == 1:
+          dekkebredde = float(data[1]['dekkebredde'])
           diff = round(dekkebredde-float(self.tekstbasert_input_field.text()),1)
           self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(diff)))
+        elif col_number == 2:
+          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(data[1]['ant_felt'])))
+        elif col_number == 3:
+          vegk_link4 = "kommune:(~602,626,219,220))/@261273,6645269,8/vegobjekt:"+str(data[0])+":40a744:583"
+          print(data[0])
+          vegkart_objectid_button = QPushButton('Søk', self)
+          vegkart_objectid_button.clicked.connect(lambda checked: webbrowser.open(vegk_link+vegk_link2+vegk_link3+vegk_link4))
+          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(10)))
+          self.tabell.setCellWidget(row_number, col_number, vegkart_objectid_button)
+    
+    self.tekstbasert_tab.setLayout(self.tekstbasert_tab.layout)
+    #self.vegkart_tab.setLayout(self.vegkart_tab.layout)
+    self.layout.addWidget(self.tabs)
+    self.window.setLayout(self.layout)
+    self.window.show()
 
 
 if __name__ == '__main__':
