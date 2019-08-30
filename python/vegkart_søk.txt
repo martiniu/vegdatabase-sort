@@ -3,3 +3,13 @@ https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata/hva:(~(farge:'2_2,filte
 
 Ev18, der dekkebredde er mindre enn 22 meter, vei som er kortere er rød, vei som er større er blå:
 https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata/hva:(~(farge:'1_1,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'2_2,filter:(~(operator:'*3c,type_id:5555,verdi:(~22))),id:583))/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@256753,6648504,10.699671583683077
+
+
+----
+Test av zoom på objekt, ingen suksess
+https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~22))),id:583))/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@262962,6647895,18/vegobjekt:86506940:40a744:583
+
+
+https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~22))),id:583))/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@262968,6647887,17/vegobjekt:86506940:40a744:583
+
+https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~22))),id:583))/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@262962,6647895,18/vegobjekt:86506940:40a744:583

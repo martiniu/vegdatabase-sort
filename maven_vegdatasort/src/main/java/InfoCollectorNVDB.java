@@ -27,7 +27,7 @@ public class InfoCollectorNVDB {
      */
     static void writeRoadObjectsFull(){
         try {
-            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("objectwiki.txt"), "utf-8"));
+            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("GitHub/vegdatabase-sort/objectwiki.txt"), "utf-8"));
 
             for (FeatureType featureType : roadObjectClient.getDatakatalog().getFeatureTypes()){
 
