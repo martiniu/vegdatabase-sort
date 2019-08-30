@@ -9,7 +9,6 @@ class App(QMainWindow):
 
   def __init__(self):
     super().__init__()
-    QAbstractTableModel.__init__(self, parent=None)
     self.title = 'Nasjonal Vegdatabase'
     self.layout = QVBoxLayout()
     self.window = QWidget()
@@ -21,6 +20,9 @@ class App(QMainWindow):
 
 
   def initUI(self):
+    """
+    Initializes various tabs, search-input, table and statistics.
+    """
     self.setWindowTitle(self.title)
     self.tabs = QTabWidget()
 
@@ -101,6 +103,10 @@ class App(QMainWindow):
 
 
   def filter_by_threshold(self):
+    """
+    This method returns a list of tuples where each tuple consist of key-value pair
+    with unique "vegbreddeid" as key, and dictionary with "dekkebredde", "ant_felt" and "veglenkeid" as value. 
+    """
     # This is python one-liner magic, if it does not make any sense to you, google "python list comprehension" and "python ternary operators"
     return [(key,value) for key,value in self.vegobjekter.items() if value['dekkebredde'] < int(self.tekstbasert_input_field.text())] \
       if str(self.tekstbasert_combo_box.currentText()) == '<' \
@@ -108,6 +114,10 @@ class App(QMainWindow):
 
 
   def calculate_values(self):
+    """
+    This method sorts a filtered list of tuples, populates the table with correct values
+    and updates the information screen after each search. 
+    """
     filtered_values = self.filter_by_threshold()
     filtered_values = sorted(filtered_values, key=lambda i:i[1]['dekkebredde'])
     self.populate_table(filtered_values)
@@ -134,6 +144,9 @@ class App(QMainWindow):
 
 
   def vegkart_button_click(self):
+    """
+    This method redirects a user to the vegkart with preconfigured inputs and search-values.
+    """
     dekkebredde_value = self.vegkart_input_field.text()
     base_url = "https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:geodata"
     edit_url, edit_url2, edit_url3 = "","",""
@@ -154,6 +167,10 @@ class App(QMainWindow):
 
 
   def populate_table(self, values):
+    """
+    This method populates the table with values. Values for each column are calculated and set in the correct cell.
+    The last column consists of a button for each unique "vegbreddeid" and redirects user to the vegkart in order to inspect the "vegbredde" object. 
+    """
     self.tabell.setRowCount(len(values))
 
     vegk_link = "https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:nib/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),"
@@ -161,20 +178,8 @@ class App(QMainWindow):
     vegk_link3 = "(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~27))),id:583))/hvor:(fylke:(~3),"
     
     for row_number, row_data in enumerate(values):
-      #print(row_number, row_data)
       data = values[row_number]
       for col_number in range(4):
-        #print(col_number)
-        #print(data)
-        # if data=='dekkebredde':
-        #   self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(values[row_number][data])))
-        # elif data=='ant_felt':
-        #   self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(values[row_number][data])))
-        # elif: data=='Vegkartobjekt'
-        # else:
-        #   dekkebredde = float(values[row_number]['dekkebredde'])
-        #   diff = round(dekkebredde-float(self.tekstbasert_input_field.text()),1)
-        #   self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(diff)))
         if col_number == 0:
           self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(data[1]['dekkebredde'])))
         elif col_number == 1:
@@ -184,18 +189,9 @@ class App(QMainWindow):
         elif col_number == 2:
           self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(data[1]['ant_felt'])))
         elif col_number == 3:
-          vegk_link4 = "kommune:(~602,626,219,220))/@261273,6645269,8/vegobjekt:"+str(data[0])+":40a744:583"
-          print(data[0])
           vegkart_objectid_button = QPushButton('Søk', self)
-          vegkart_objectid_button.clicked.connect(lambda checked: webbrowser.open(vegk_link+vegk_link2+vegk_link3+vegk_link4))
-          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(10)))
+          vegkart_objectid_button.clicked.connect(lambda checked, arg=data[0]: webbrowser.open(vegk_link+vegk_link2+vegk_link3+"kommune:(~602,626,219,220))/@261273,6645269,8/vegobjekt:"+str(arg)+":40a744:583"))
           self.tabell.setCellWidget(row_number, col_number, vegkart_objectid_button)
-    
-    self.tekstbasert_tab.setLayout(self.tekstbasert_tab.layout)
-    #self.vegkart_tab.setLayout(self.vegkart_tab.layout)
-    self.layout.addWidget(self.tabs)
-    self.window.setLayout(self.layout)
-    self.window.show()
 
 
 if __name__ == '__main__':
