@@ -20,7 +20,7 @@ Contains a list of query examples, with short explanations of each id and value 
   - files: contains .json files for script.py and file_sorter.py to use.
   - unused: contains old .json files and old methods previously used in file_sorter.py
 
-# java
+# maven_vegdatasort
 - **InfoCollectorNVDB.java** and **Main.java**
   - Contains a couple methods to collect important information about RoadObject types and  their Attribute types. This method prints the information to objectwiki.txt.
 
