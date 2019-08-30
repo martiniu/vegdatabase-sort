@@ -24,7 +24,6 @@ from PyQt5.Qt import Qt
 # 0_1 Blå?
 
 class App(QMainWindow):
-
   def __init__(self):
     super().__init__()
     QAbstractTableModel.__init__(self, parent=None)
@@ -113,7 +112,6 @@ class App(QMainWindow):
     # Connect buttons to functions
     self.tekstbasert_search_button.clicked.connect(self.calculate_values)
     self.vegkart_search_button.clicked.connect(self.vegkart_button_click)
-
     # Show GUI
     self.window.show()
 
@@ -124,9 +122,9 @@ class App(QMainWindow):
       if str(self.tekstbasert_combo_box.currentText()) == '<' \
       else [value for key,value in self.vegobjekter.items() if value['dekkebredde'] >= int(self.tekstbasert_input_field.text())]
 
-
   def calculate_values(self):
     filtered_values = self.filter_by_threshold()
+    filtered_values = sorted(filtered_values, key=lambda i:i['dekkebredde'], reverse=False)
     self.populate_table(filtered_values)
 
     if len(filtered_values) != 0:
@@ -182,7 +180,6 @@ class App(QMainWindow):
           dekkebredde = float(values[row_number]['dekkebredde'])
           diff = round(dekkebredde-float(self.tekstbasert_input_field.text()),1)
           self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(diff)))
-
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
