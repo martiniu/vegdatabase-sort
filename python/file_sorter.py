@@ -5,12 +5,24 @@ import copy
 
 
 def create_object_from_href(href):
-    response = requests.get(href).json()
+    """
+    Finds every object and each object's properties for each property that we
+    are interested in. Saves info to a new object.
+
+    Eg.
+    Objectid {
+        egenskaper:
+            {
+            dekkebredde: 22.7
+            ant_kjørefelt: 4
+            }
+    }
+    """
+
+    response = requests.get(href).json()    # fetch query search as a .json file
     for o in response['objekter']:
         response_objekt = requests.get(o['href']).json()
         for egenskap in response_objekt['egenskaper']:
-            # checks for properties that are relevant on the road
-            # dekkebredde, ant_felt and veglenkeid
             if egenskap['navn'] == 'Dekkebredde':
                 egenskaper =	{
                     "dekkebredde": egenskap['verdi'],
@@ -19,20 +31,14 @@ def create_object_from_href(href):
                 egenskaper =    {
                     "ant_felt": egenskap['verdi'],
                 }
-            # if egenskap['navn'] == 'Vegkategori':
-            #     egenskaper = {
-            #         "vegkategori": egenskap['verdi'],
-            #     }
-            # if egenskap['navn'] == 'Vegstatus':
-            #     egenskaper['vegstatus'] = egenskap['verdi']
-            # if egenskap['navn'] == 'Vegnummer':
-            #     egenskaper['vegnummer'] = egenskap['verdi']
 
         egenskaper['veglenkeid'] = response_objekt['lokasjon']['stedfestinger'][0]['veglenkeid']
         vegobjekt[o['id']] = egenskaper
 
 
-    # if 1000 objects were returned, get the link to the next batch of objects and loop through it
+    # whenever the query search returns, it caps at 1000 objects and pastes a link
+    # to the "rest" of the objects, if 1000 objects were returned, we will continue
+    # to read more objects
     if response['metadata']['returnert'] == 1000:
         create_object_from_href(response['metadata']['neste']['href'])
 
@@ -52,6 +58,10 @@ def write_dict_to_file(dict, filename):
         json.dump(dict, writeobject)
 
 def create_all_felt():
+    """
+    Assists write_all_felt(), read that method's description
+    """
+
     oslo = get_file_as_json('files/felt_oslo.json')
     asker = get_file_as_json('files/felt_asker.json')
     lier = get_file_as_json('files/felt_lier.json')
@@ -67,6 +77,10 @@ def create_all_felt():
     return felt
 
 def write_all_felt():
+    """
+    Creates a superfile that writes every "ant_felt" to a superfile.
+    """
+
     felt_oslo = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?fylke=3'
     felt_asker = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=220'
     felt_lier = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=626'
@@ -83,15 +97,23 @@ def write_all_felt():
     write_dict_to_file(felt, 'files/felt_alle.json')
 
 def write_query_vegref():
+    # writes the main "big" query to avoid a million files to sort and compare
     query_vegref = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/583?egenskap="5555>=0"&vegreferanse=EV18&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
 
     write_href_to_file(query_vegref, 'files/query_vegref_uten_felt.json')
 
 def merge_query_vegref_felt():
+    """
+    Merges the "big" query and the superfile with "ant_felt" as a common denominator.
+    """
+
     query_vegref = get_file_as_json('files/query_vegref_uten_felt.json')
     felt = get_file_as_json('files/felt_alle.json')
 
     query_vegref_copy = copy.deepcopy(query_vegref)
+
+    # connects each object by "veglenkeid" and adds every valid "ant_felt" to
+    # a list to place into yet another custom object file
 
     for d in query_vegref:
         felt_liste = []
