@@ -16,9 +16,8 @@ Contains a list of query examples, with short explanations of each id and value 
 - **file_sorter.py**
   - Contains a script that sorts through information and saves it for easy use. This information is used in script.py to display statistics about the given input.
 
-- **other**
-  - files: contains .json files for script.py and file_sorter.py to use.
-  - unused: contains old .json files and old methods previously used in file_sorter.py
+- **files**
+  - Contains .json files for script.py and file_sorter.py to use.
 
 # maven_vegdatasort
 - **InfoCollectorNVDB.java** and **Main.java**
