@@ -72,8 +72,8 @@ class App(QMainWindow):
 
     # Infotable
     self.tabell = QTableWidget()
-    self.tabell.setColumnCount(4)
-    self.tabell.setHorizontalHeaderLabels(["Dekkebredde", "Diff. fra input", "Ant. felt", "Vegkartobjekt"])
+    self.tabell.setColumnCount(3)
+    self.tabell.setHorizontalHeaderLabels(["Dekkebredde", "Diff. fra input", "Vegkartobjekt"])
     self.tekstbasert_tab.layout.addWidget(self.tabell)
 
     # Infoscreen
@@ -188,9 +188,9 @@ class App(QMainWindow):
           dekkebredde = float(data[1]['dekkebredde'])
           diff = round(dekkebredde-float(self.tekstbasert_input_field.text()),1)
           self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(diff)))
+        #elif col_number == 2:
+          #self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(data[1]['ant_felt'])))
         elif col_number == 2:
-          self.tabell.setItem(row_number, col_number, QTableWidgetItem(str(data[1]['ant_felt'])))
-        elif col_number == 3:
           vegkart_objectid_button = QPushButton('Søk', self)
           vegkart_objectid_button.clicked.connect(lambda checked, arg=data[0]: webbrowser.open(veg_link+veg_link2+veg_link3+"kommune:(~602,626,219,220))/@261273,6645269,8/vegobjekt:"+str(arg)+":40a744:583"))
           self.tabell.setCellWidget(row_number, col_number, vegkart_objectid_button)
