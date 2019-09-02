@@ -154,9 +154,9 @@ class App(QMainWindow):
     edit_url3 = "/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@253703,6648215,12"
     
     if str(self.vegkart_combo_box.currentText()) == '<':
-      edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
+      edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18)),(operator:'*3c*3d,type_id:4569,verdi:(~49))),id:532),(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
     else:
-      edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18))),id:532),(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
+      edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18)),(operator:'*3c*3d,type_id:4569,verdi:(~49))),id:532),(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
       
     self.tekstbasert_input_field.setText(dekkebredde_value)
     self.tekstbasert_combo_box.setCurrentText(self.vegkart_combo_box.currentText())
@@ -172,7 +172,7 @@ class App(QMainWindow):
     self.tabell.setRowCount(len(values))
 
     veg_link = "https://www.vegvesen.no/nvdb/vegkart/v2/#kartlag:nib/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),"
-    veg_link2 = "(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18))),id:532),"
+    veg_link2 = "(operator:'*3d,type_id:4570,verdi:(~5506)),(operator:'*3d,type_id:4568,verdi:(~18)),(operator:'*3c*3d,type_id:4569,verdi:(~49))),id:532),"
     veg_link3 = ""
     if str(self.tekstbasert_combo_box.currentText()) == '<':
       veg_link3 = "(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~"+self.tekstbasert_input_field.text()+"))),id:583))/hvor:(fylke:(~3),"
