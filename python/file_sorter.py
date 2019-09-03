@@ -57,44 +57,14 @@ def write_dict_to_file(dict, filename):
     with open(filename, 'w') as writeobject:
         json.dump(dict, writeobject)
 
-def create_all_felt():
-    """
-    Assists write_all_felt(), read that method's description
-    """
-
-    oslo = get_file_as_json('files/felt_oslo.json')
-    asker = get_file_as_json('files/felt_asker.json')
-    lier = get_file_as_json('files/felt_lier.json')
-    drammen = get_file_as_json('files/felt_drammen.json')
-    bærum = get_file_as_json('files/felt_bærum.json')
-
-    oslo.update(asker)
-    oslo.update(lier)
-    oslo.update(drammen)
-    oslo.update(bærum)
-
-    felt = copy.deepcopy(oslo)
-    return felt
-
 def write_all_felt():
     """
     Creates a superfile that writes every "ant_felt" to a superfile.
     """
 
-    felt_oslo = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?fylke=3'
-    felt_asker = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=220'
-    felt_lier = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=626'
-    felt_drammen = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=602'
-    felt_bærum = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?kommune=219'
+    query_felt = 'https://www.vegvesen.no/nvdb/api/v2/vegobjekter/482?egenskap="5192>=0"&vegreferanse=Ev18hp1-hp49&kommune=301&kommune=220&kommune=219&kommune=602&kommune=626'
 
-    write_href_to_file(felt_oslo, 'files/felt_oslo.json')
-    write_href_to_file(felt_asker, 'files/felt_asker.json')
-    write_href_to_file(felt_lier, 'files/felt_lier.json')
-    write_href_to_file(felt_drammen, 'files/felt_drammen.json')
-    write_href_to_file(felt_bærum, 'files/felt_bærum.json')
-
-    felt = create_all_felt()
-    write_dict_to_file(felt, 'files/felt_alle.json')
+    write_href_to_file(query_felt, 'files/query_felt.json')
 
 def write_query_vegref():
     # writes the main "big" query to avoid a million files to sort and compare
@@ -108,7 +78,7 @@ def merge_query_vegref_felt():
     """
 
     query_vegref = get_file_as_json('files/query_vegref_uten_felt.json')
-    felt = get_file_as_json('files/felt_alle.json')
+    felt = get_file_as_json('files/query_felt.json')
 
     query_vegref_copy = copy.deepcopy(query_vegref)
 
