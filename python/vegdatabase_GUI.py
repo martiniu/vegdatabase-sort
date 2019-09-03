@@ -1,5 +1,6 @@
 import json
 import sys
+import os
 import webbrowser
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -13,10 +14,17 @@ class App(QMainWindow):
     self.layout = QVBoxLayout()
     self.window = QWidget()
 
-    with open('files/query_vegref_med_felt.json') as json_file:
+    print(os.getcwd())
+    with open(self.resource_path('files/query_vegref_med_felt.json')) as json_file:
       self.vegobjekter = json.load(json_file)
 
     self.initUI()
+
+
+  def resource_path(self, relative_path):
+    if hasattr(sys, '_MEIPASS'):
+      return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath('.'), relative_path)
 
 
   def initUI(self):
@@ -105,7 +113,7 @@ class App(QMainWindow):
   def filter_by_threshold(self):
     """
     This method returns a list of tuples where each tuple consist of key-value pair
-    with unique "vegbreddeid" as key, and dictionary with "dekkebredde", "ant_felt" and "veglenkeid" as value. 
+    with unique "vegbreddeid" as key, and dictionary with "dekkebredde", "ant_felt" and "veglenkeid" as value.
     """
     # This is python one-liner magic, if it does not make any sense to you, google "python list comprehension" and "python ternary operators"
     return [(key,value) for key,value in self.vegobjekter.items() if value['dekkebredde'] < int(self.tekstbasert_input_field.text())] \
@@ -116,7 +124,7 @@ class App(QMainWindow):
   def calculate_values(self):
     """
     This method sorts a filtered list of tuples, populates the table with correct values
-    and updates the information screen after each search. 
+    and updates the information screen after each search.
     """
     filtered_values = self.filter_by_threshold()
     filtered_values = sorted(filtered_values, key=lambda i:i[1]['dekkebredde'])
@@ -152,12 +160,12 @@ class App(QMainWindow):
     edit_url2 = ""
     edit_url = "/hva:(~(farge:'2_2,filter:(~(operator:'*3d,type_id:4566,verdi:(~5492)),(operator:'*3d,type_id:4570,verdi:(~5506)),"
     edit_url3 = "/hvor:(fylke:(~3),kommune:(~602,626,219,220))/@253703,6648215,12"
-    
+
     if str(self.vegkart_combo_box.currentText()) == '<':
       edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18)),(operator:'*3c*3d,type_id:4569,verdi:(~49))),id:532),(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
     else:
       edit_url2 = "(operator:'*3d,type_id:4568,verdi:(~18)),(operator:'*3c*3d,type_id:4569,verdi:(~49))),id:532),(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+str(dekkebredde_value)+"))),id:583))"
-      
+
     self.tekstbasert_input_field.setText(dekkebredde_value)
     self.tekstbasert_combo_box.setCurrentText(self.vegkart_combo_box.currentText())
     self.calculate_values()
@@ -167,7 +175,7 @@ class App(QMainWindow):
   def populate_table(self, values):
     """
     This method populates the table with values. Values for each column are calculated and set in the correct cell.
-    The last column consists of a button for each unique "vegbreddeid" and redirects user to the vegkart in order to inspect the "vegbredde" object. 
+    The last column consists of a button for each unique "vegbreddeid" and redirects user to the vegkart in order to inspect the "vegbredde" object.
     """
     self.tabell.setRowCount(len(values))
 
@@ -178,7 +186,7 @@ class App(QMainWindow):
       veg_link3 = "(farge:'0_1,filter:(~(operator:'*3c,type_id:5555,verdi:(~"+self.tekstbasert_input_field.text()+"))),id:583))/hvor:(fylke:(~3),"
     else:
       veg_link3 = "(farge:'0_1,filter:(~(operator:'*3e*3d,type_id:5555,verdi:(~"+self.tekstbasert_input_field.text()+"))),id:583))/hvor:(fylke:(~3),"
-    
+
     for row_number, row_data in enumerate(values):
       data = values[row_number]
       for col_number in range(4):
